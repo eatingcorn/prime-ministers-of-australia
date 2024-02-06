@@ -10,7 +10,6 @@
 library(tidyverse)
 library(xml2)
 library(rvest)
-# [...UPDATE THIS...]
 
 #### Read Data ####
 raw_data <- read_html("https://en.wikipedia.org/wiki/List_of_prime_ministers_of_Australia")
