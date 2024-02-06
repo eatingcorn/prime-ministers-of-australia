@@ -1,216 +1,105 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Analysis of The Lifespan of Australian Prime Ministers"
 author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
+  - Ricky Fung
+thanks: "Code and data are available at: https://github.com/eatingcorn/prime-ministers-of-australia"
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
 format: pdf
 number-sections: true
 bibliography: references.bib
 ---
+```{r}
+#| echo: false
+#| warning: false
+#### Preamble ####
+
+# Purpose: Analyze life span of Australian Prime Ministers
+# Author: Ricky Fung
+# Date: February 06, 2024
+# Contact: ricky.fung@mail.utoronto.ca
+# Pre-requisites: Run the files "01-download_data.R" and "02-data_cleaning.R".
+```
+
 
 ```{r}
 #| include: false
 #| warning: false
 #| message: false
 
+#### Read Data ####
+library(knitr)
 library(tidyverse)
-library(palmerpenguins)
+
+cleaned_data <- read_csv(here::here("outputs/data/clean_pm_data.csv"))
+
 ```
-
-
-# Introduction
-
-You can and should cross-reference sections and sub-sections. 
-
-The remainder of this paper is structured as follows. @sec-data....
-
 
 
 # Data {#sec-data}
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+## Overview {#sec-data-overview}
 
-```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
+The data used in this analysis was from Wikipedia on the List of Prime Ministers of Australia [@citeWiki]. Federal elections are held every three years unless called early by prime ministers. Prime ministers do not have fixed terms and generally serve the full length of their term unless they lose the majority of the House or are replaced as the leader of their party [@citeWiki]. The Wikipedia page contains the 31 prime ministers elected from 1901 to the current year. It includes attributes such as Name (Birth-Death) Constituency, Election, Term of Office, Political party, Ministry, Monarch, and Government General. However, we are only interested in Name (Birth-Death) Constituency during this analysis.
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
-```
+Using the R programming language [@citeR] and packages, babynames [@citeBaby], and tidyverse [@citeTidy] were used to simulate and test the data set and generate tests. The xml2 [@citeXml], janitor [@citeJanitor], tidyverse [@citeTidy], knitr [@knitr] and rvest [@citeRvest] packages were then used to read and write HTML files from Wikipedia as well as clean the raw web scraped data, test for it, and display the data. R code was referenced by Rohan [@citeTelling].
 
-Talk more about it.
+The data cleaning process took longer than expected as I ran into problems separating the data into multiple columns. For example, separating "Edmund Barton(1849–1920)MP", into columns name, born, and died. After that, everything started to flow together and become fun as no serious and time-consuming issues came up. What I would do differently next time is the selection of data, instead of years lived, I would want to investigate the time in office instead.
 
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
-
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
-#| echo: false
-#| warning: false
-#| message: false
-
-analysis_data <- read_csv(here::here("outputs/data/analysis_data.csv"))
-
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
-```
-
-Talk way more about it. 
-
-
-
-# Model
-
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-
-### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
-
-# Results
-
-Our results are summarized in @tbl-modelresults.
-
-```{r}
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
-
-library(rstanarm)
-
-first_model <-
-  readRDS(file = here::here("outputs/models/first_model.rds"))
-```
-
-```{r}
-#| echo: false
-#| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
-#| warning: false
-
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
-)
-```
-
-
-
-
-# Discussion
-
-## First discussion point {#sec-first-point}
-
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
-
-## Second discussion point
-
-## Third discussion point
-
-## Weaknesses and next steps
-
-Weaknesses and next steps should also be included.
 
 \newpage
 
-\appendix
-
-# Appendix {-}
-
-
-# Additional data details
-
-# Model details {#sec-model-details}
-
-## Posterior predictive check
-
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
-
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
-
+## Result {#sec-data-result}
 ```{r}
-#| eval: true
 #| echo: false
-#| message: false
 #| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
+#| message: false
+#| eval: true
+#| label: tbl-preview-cleaned
+#| tbl-cap: Australian Prime Ministers, by how old they were when they died
 
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
+#### Table 1 ####
+cleaned_data %>%
+  arrange(birth_year) %>%
+  kable(
+    col.names = c("Prime Minister", "Birth year", "Death year", "Years lived")
+    )
+```
+@tbl-preview-cleaned, provides an overview of the web-scraped data cleaned from Wikipedia on the List of Prime Ministers of Australia.
 
-posterior_vs_prior(first_model) +
+\newpage
+
+```{r plot-wider, fig.height=5}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-aus-pm-time-lived
+#| fig-cap: "How long each prime minister of Australia lived"
+
+#### Figure 1 ####
+cleaned_data |>
+  mutate(
+    still_alive = if_else(is.na(death_year), "Yes", "No"),
+    died = if_else(is.na(death_year), as.integer(2023), death_year)
+  ) |>
+  mutate(prime_minister = as_factor(prime_minister)) |>
+  ggplot(
+    aes(x = birth_year, xend = died, y = prime_minister, yend = prime_minister, color = still_alive), height = 200
+    ) +
+  geom_segment() +
+  labs(
+    x = "Year of birth", y = "Prime minister", color = "PM is currently alive"
+    ) +
   theme_minimal() +
   scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
+  theme(legend.position = "bottom")
+
+
 ```
 
-## Diagnostics
+# Discussion
 
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
-
-```{r}
-#| echo: false
-#| eval: true
-#| message: false
-#| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
-
-plot(first_model, "trace")
-
-plot(first_model, "rhat")
-```
-
+From @tbl-preview-cleaned, and @fig-aus-pm-time-lived, observing the years lived we see that prime ministers born in the 19th century have a life span less than those in the 20th century. Continuing this observation, we can explore how developments in health and the impact of world wars might have influenced this trend. From the transition from the 19th to the 20th century, improvements in sanitation, introduction of new antibiotics, advancements in technology, and other medical innovations most likely increased the life expectancy of not only the prime minister but all Australians. The First and Second World Wars most likely affected those alive during those times as tremendous stress, trauma, and physical demands of wartime may have taken a toll on their health, especially those leading at the time of war.
 
 
 \newpage

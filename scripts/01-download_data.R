@@ -1,26 +1,23 @@
 #### Preamble ####
-# Purpose: Downloads and saves the data from [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
-# License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Purpose: Read and save HTML from wikipedia list of Australian prime ministers.
+# Author: Ricky Fung
+# Date: 06 February 2024
+# Contact: ricky.fung@mail.utoronto.ca
+# Pre-requisites: Install tidyverse, xml12, and rvest package.
 
 
 #### Workspace setup ####
-library(opendatatoronto)
 library(tidyverse)
+library(xml2)
+library(rvest)
 # [...UPDATE THIS...]
 
-#### Download data ####
-# [...ADD CODE HERE TO DOWNLOAD...]
+#### Read Data ####
+raw_data <- read_html("https://en.wikipedia.org/wiki/List_of_prime_ministers_of_Australia")
 
 
+#### Save Data ####
+write_html(raw_data, "inputs/data/pms.html")
 
-#### Save data ####
-# [...UPDATE THIS...]
-# change the_raw_data to whatever name you assigned when you downloaded it.
-write_csv(the_raw_data, "inputs/data/raw_data.csv") 
 
          
